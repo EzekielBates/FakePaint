@@ -6,11 +6,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import javafx.stage.Stage;;
 
 public class FXFakePaint extends Application{
 
@@ -33,14 +33,15 @@ public class FXFakePaint extends Application{
 		Canvas canvas = new Canvas(400,400);		
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		//allows you to draw on a mouse click
-		canvas.setOnMousePressed(e -> {
-			if(e.isPrimaryButtonDown()) {
-			Circle circle = new Circle(e.getX(),e.getY(),sc.getValue());
+		canvas.setOnMouseDragged(e -> {
+			
+			if(e.getButton() == MouseButton.PRIMARY ) {
 			gc.setStroke(colorPicker.getValue());
 			gc.setFill(colorPicker.getValue());
-			gc.fillOval(circle.getCenterX(), circle.getCenterY(), circle.getRadius(), circle.getRadius());
-			gc.strokeOval(circle.getCenterX(), circle.getCenterY(), circle.getRadius(), circle.getRadius());
-			}
+			gc.fillOval(e.getX() , e.getY(), sc.getValue(), sc.getValue());
+			gc.strokeOval(e.getX(), e.getY(), sc.getValue(), sc.getValue());
+			
+		}
 			
 		});
 		
