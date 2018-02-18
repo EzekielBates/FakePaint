@@ -12,8 +12,14 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -30,6 +36,8 @@ public class FakePaintPane extends BorderPane{
 	
 	final Background vBoxBackground = new Background(new BackgroundFill(Color.ANTIQUEWHITE,null,null));
 	final Background menuContainerBackground = new Background(new BackgroundFill(Color.LIGHTGRAY,null,null));
+	final Background everythingBackground = new Background(new BackgroundFill(Color.GRAY,null,null));
+	final Border canvasBorder = new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID,CornerRadii.EMPTY, BorderWidths.DEFAULT));
 	
 	//Everything that goes inside of the left side panel
 	private ColorPicker colorPicker = new ColorPicker();
@@ -39,11 +47,14 @@ public class FakePaintPane extends BorderPane{
 	//everything that goes with the top file bar
 	private MenuBar fileBar = new MenuBar();
 	private Menu file = new Menu("File");
+	private Menu options = new Menu("Options");
 	private MenuItem open = new MenuItem("Open");
 	private MenuItem save = new MenuItem("Save");
 	private MenuItem newFakePaint = new MenuItem("New");
-	
+	private MenuItem changeCanvasSize = new MenuItem("Resize");
+
 	//The canvas that will be drawn on
+	private Pane canvasPane = new Pane();
 	private  Canvas canvas = new Canvas();
 	private  GraphicsContext gc = canvas.getGraphicsContext2D();
 	
@@ -53,13 +64,12 @@ public class FakePaintPane extends BorderPane{
 	 * @param height the height of the canvas
 	 */
 	protected FakePaintPane(double width,double height){
+		setUpCanvasPane(height,width);
 		brushSize.setMin(1);
 		brushSize.setValue(1);
 		setLeft(createLeftPanel());
-		setTop(createMenuBar());
-		canvas.setHeight(height);
-		canvas.setWidth(width);
-		setCenter(canvas);
+		setTop(createMenuBar());	
+		setCenter(canvasPane);
 	}
 	/**
 	 * Create the left pane for the fake paint GUI.
@@ -79,11 +89,21 @@ public class FakePaintPane extends BorderPane{
 	private HBox createMenuBar() {
 		HBox hBox = new HBox();
 		this.file.getItems().addAll(newFakePaint,open,save);
-		this.fileBar.getMenus().add(file);
-		hBox.getChildren().add(this.fileBar);
+		this.options.getItems().add(changeCanvasSize);
+		this.fileBar.getMenus().addAll(file,options);
+		hBox.getChildren().addAll(this.fileBar);
 		hBox.setBackground(menuContainerBackground);
 		return hBox;
 		
+	}
+	
+	private void setUpCanvasPane(double height,double width) {
+		canvas.setWidth(width);
+		canvas.setHeight(height);
+		canvasPane.getChildren().add(canvas);
+		canvasPane.setBorder(canvasBorder);	
+		canvasPane.setMaxHeight(height);
+		canvasPane.setMaxWidth(width);
 	}
 	
 	public ScrollBar getBrushSize() {
@@ -118,6 +138,12 @@ public class FakePaintPane extends BorderPane{
 	public GraphicsContext getGc() {
 		return gc;
 	}
+	public Pane getCanvasPane() {
+		return canvasPane;
+	}
+	public MenuItem getChangeCanvasSize() {
+		return changeCanvasSize;
+	}
 	
 	/**
 	 * This method creates a circle at the mouse point.
@@ -134,6 +160,11 @@ public class FakePaintPane extends BorderPane{
 	public void erase(MouseEvent e) {
 		gc.setFill(Color.WHITE);
 		gc.fillOval(e.getX() - this.brushSize.getValue()/2, e.getY() - this.brushSize.getValue()/2, this.brushSize.getValue(), this.brushSize.getValue());
+	}
+	
+	public void resizeWindow(double width,double height) {
+		this.canvas.setWidth(width);
+		this.canvas.setHeight(height);
 	}
 	
 }

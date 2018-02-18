@@ -15,7 +15,6 @@ import javafx.stage.Stage;;
  * @author Ezekiel Bates
  *The implementation class for fake paint.
  *
- *
  */
 public class FXFakePaint extends Application{
 
@@ -26,7 +25,19 @@ public class FXFakePaint extends Application{
 	@Override
 	public void start(Stage primaryStage) {
 		
-		FakePaintPane pane = new FakePaintPane(500,500);
+		ResizeWindow resizeCanvas = new ResizeWindow();
+		Stage secondaryStage = new Stage();
+
+		FakePaintPane pane = new FakePaintPane(500,500);	
+		
+		Scene drawingScene = new Scene(pane);
+		
+		secondaryStage.setTitle("New FakePaint");
+		secondaryStage.setScene(new Scene(resizeCanvas));
+		
+		primaryStage.setTitle("FakePaint");
+		primaryStage.setScene(drawingScene);
+		primaryStage.show();
 		
 		//draw and erase by clicking
 		pane.getCanvas().setOnMouseClicked(e ->{
@@ -47,16 +58,22 @@ public class FXFakePaint extends Application{
 			pane.erase(e);			
 		}
 		});
-		
+		//save the current canvas drawing
 		pane.getSave().setOnAction(e -> {
 			fileManager.saveImage(pane.getCanvas(), primaryStage);
 		});
-		
-		Scene drawingScene = new Scene(pane);
-		
-		primaryStage.setTitle("FakePaint");
-		primaryStage.setScene(drawingScene);
-		primaryStage.show();
+		//resize the current canvas
+		pane.getChangeCanvasSize().setOnAction(e->{
+			secondaryStage.show();
+			resizeCanvas.getBtEnter().setOnAction(a->{
+				double width = Double.parseDouble(resizeCanvas.getWidthInput().getText());
+				double height = Double.parseDouble(resizeCanvas.getHeightInput().getText());				
+				pane.resizeWindow(width, height);
+				pane.getCanvasPane().setMaxHeight(height);
+				pane.getCanvasPane().setMaxWidth(width);
+				secondaryStage.close();
+			});
+		});
 		
 	}
 	
@@ -64,7 +81,5 @@ public class FXFakePaint extends Application{
 		
 		Application.launch(args);
 	}
-	
-	
-	
+
 }
