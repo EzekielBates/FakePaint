@@ -53,7 +53,8 @@ public class FakePaintPane extends BorderPane{
 	 * @param height the height of the canvas
 	 */
 	protected FakePaintPane(double width,double height){
-		brushSize.setMin(1);		
+		brushSize.setMin(1);
+		brushSize.setValue(1);
 		setLeft(createLeftPanel());
 		setTop(createMenuBar());
 		canvas.setHeight(height);
