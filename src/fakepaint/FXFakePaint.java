@@ -10,6 +10,13 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;;
 
+/**
+ * 
+ * @author Ezekiel Bates
+ *The implementation class for fake paint.
+ *
+ *
+ */
 public class FXFakePaint extends Application{
 
 	final Background vBoxBackground = new Background(new BackgroundFill(Color.ANTIQUEWHITE,null,null));

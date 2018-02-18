@@ -16,8 +16,23 @@ import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author Ezekiel Bates
+ *
+ *A file manager class that allows you to open images and load them onto a canvas, and also save the images that you created.
+ *
+ */
+
 public class FileManager {
 
+	/**
+	 * 
+	 * This method saves the current canvas you are using as a .png
+	 * 
+	 * @param canvas The Canvas you will be saving
+	 * @param primaryStage The Stage the Canvas is in.
+	 */
 	public void saveImage(Canvas canvas,Stage primaryStage) {
 		FileChooser fileChooser = new FileChooser();
 		

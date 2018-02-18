@@ -18,6 +18,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+/**
+ * 
+ * @author Ezekiel Bates
+ * Class that creates a borderPane loaded with all the neccessary
+ * tools to run create a fake paint window.
+ *
+ */
+
 public class FakePaintPane extends BorderPane{
 	
 	final Background vBoxBackground = new Background(new BackgroundFill(Color.ANTIQUEWHITE,null,null));
@@ -39,7 +47,11 @@ public class FakePaintPane extends BorderPane{
 	private  Canvas canvas = new Canvas();
 	private  GraphicsContext gc = canvas.getGraphicsContext2D();
 	
-	//constructs the pane 
+	/**
+	 * constructs the pane. 
+	 * @param width the width of the canvas
+	 * @param height the height of the canvas
+	 */
 	protected FakePaintPane(double width,double height){
 		brushSize.setMin(1);		
 		setLeft(createLeftPanel());
@@ -48,7 +60,10 @@ public class FakePaintPane extends BorderPane{
 		canvas.setWidth(width);
 		setCenter(canvas);
 	}
-	//creates the left pane in the window
+	/**
+	 * Create the left pane for the fake paint GUI.
+	 * @return returns the VBox that creates the left pane in the window
+	 */
 	private VBox createLeftPanel() {
 		VBox vBox = new VBox();
 		vBox.setPadding(new Insets(10));
@@ -56,7 +71,10 @@ public class FakePaintPane extends BorderPane{
 		vBox.setBackground(vBoxBackground);
 		return vBox;
 	}
-	//creates the top file menu bar 
+	/**
+	 * creates the top file menu bar for the fake paint GUI.
+	 * @return returns the HBox that has all of the fileMenu items in it.
+	 */
 	private HBox createMenuBar() {
 		HBox hBox = new HBox();
 		this.file.getItems().addAll(newFakePaint,open,save);
@@ -100,11 +118,18 @@ public class FakePaintPane extends BorderPane{
 		return gc;
 	}
 	
+	/**
+	 * This method creates a circle at the mouse point.
+	 * @param e A MouseEvent
+	 */
 	public void draw(MouseEvent e) {
 		gc.setFill(colorPicker.getValue());
 		gc.fillOval(e.getX() - this.brushSize.getValue()/2, e.getY() - this.brushSize.getValue()/2, this.brushSize.getValue(), this.brushSize.getValue());
 	}
-	
+	/**
+	 * This method creates a white circle to 'erase' whatever is drawn on the canvas at the mouse point.
+	 * @param e A MouseEvent
+	 */
 	public void erase(MouseEvent e) {
 		gc.setFill(Color.WHITE);
 		gc.fillOval(e.getX() - this.brushSize.getValue()/2, e.getY() - this.brushSize.getValue()/2, this.brushSize.getValue(), this.brushSize.getValue());
